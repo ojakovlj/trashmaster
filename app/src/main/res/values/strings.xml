@@ -7,6 +7,7 @@
     <string name="title_activity_map">Map</string>
     <string name="title_activity_overview">OverviewActivity</string>
     <string-array name="type_choices">
+        <item>NONE</item>
         <item>Plastic</item>
         <item>Paper</item>
         <item>Bio</item>

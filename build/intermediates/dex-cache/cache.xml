@@ -36,5 +36,12 @@
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
         <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\debug\classes-467c99a0e4d8aa009a653fd45961dc62abe82b9a.jar" />
     </item>
+    <item
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\libs\radial-menu-v4.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="5d8365e03c7b428815d3d8584332b1df298cbb9c">
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\debug\radial-menu-v4-d7c7b85907107bf2e3a0242b98d26666d8ddfb8c.jar" />
+    </item>
 
 </items>

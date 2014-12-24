@@ -1,36 +1,31 @@
 package com.sincress.trashmaster;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.view.Display;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
 
-import java.util.ArrayList;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private Spinner typeSelector;
     private LatLng clickCoords;
-    private Point clickPos;
+    private Point clickPos, screenSize;
+    private RadialMenuWidget pieMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +35,57 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        typeSelector = (Spinner) findViewById(R.id.spinner);
-        typeSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        screenSize  = new Point();
+        getWindowManager().getDefaultDisplay().getSize(screenSize);
+
+        RadialMenuItem itemPlastic = new RadialMenuItem("0","Plastic");
+        RadialMenuItem itemPaper = new RadialMenuItem("1","Paper");
+        RadialMenuItem itemBio = new RadialMenuItem("2","Bio");
+        RadialMenuItem itemGlass = new RadialMenuItem("3","Glass");
+        RadialMenuItem itemMetal = new RadialMenuItem("4","Metal");
+
+        pieMenu = new RadialMenuWidget(MapActivity.this);
+        pieMenu.setOutlineColor(Color.BLACK, 225);
+        pieMenu.setInnerRingColor(0x33AA33, 180);
+        pieMenu.setOuterRingColor(0x0099CC, 180);
+        pieMenu.addMenuEntry(itemPlastic);
+        itemPlastic.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                typeSelector.setVisibility(View.INVISIBLE);
-                putMarkerOnMap((int)id);
+            public void execute() {
+                pieMenu.dismiss();
+                putMarkerOnMap(0);
             }
-
+        });
+        pieMenu.addMenuEntry(itemPaper);
+        itemPaper.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void execute() {
+                pieMenu.dismiss();
+                putMarkerOnMap(1);
+            }
+        });
+        pieMenu.addMenuEntry(itemBio);
+        itemBio.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                pieMenu.dismiss();
+                putMarkerOnMap(2);
+            }
+        });
+        pieMenu.addMenuEntry(itemGlass);
+        itemGlass.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                pieMenu.dismiss();
+                putMarkerOnMap(3);
+            }
+        });
+        pieMenu.addMenuEntry(itemMetal);
+        itemMetal.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                pieMenu.dismiss();
+                putMarkerOnMap(4);
             }
         });
     }
@@ -89,11 +124,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onMapLongClick(LatLng latLng) {
                 clickPos = mMap.getProjection().toScreenLocation(latLng);
-                typeSelector.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 40);
-                params.leftMargin =  clickPos.x;
-                params.topMargin = clickPos.y;
-                typeSelector.setLayoutParams(params);
+                pieMenu.setVisibility(View.VISIBLE);
+                RelativeLayout rellay = (RelativeLayout) findViewById(R.id.rellay);
+                pieMenu.setX(clickPos.x-screenSize.x/2);
+                pieMenu.setY(clickPos.y-screenSize.y/2);
+                pieMenu.show(rellay);
                 clickCoords = latLng;
             }
         });
