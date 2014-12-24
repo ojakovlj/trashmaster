@@ -11,5 +11,13 @@
         android:name="com.google.android.gms.maps.MapFragment">
     </fragment>
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:visibility="invisible"
+        android:entries="@array/type_choices"
+        android:background="#ffffff"/>
+
 
 </RelativeLayout>

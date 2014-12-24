@@ -6,5 +6,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_overview">OverviewActivity</string>
+    <string-array name="type_choices">
+        <item>Plastic</item>
+        <item>Paper</item>
+        <item>Bio</item>
+        <item>Metal</item>
+        <item>Glass</item>
+    </string-array>
 
 </resources>
