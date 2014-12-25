@@ -6,15 +6,15 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
 import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
@@ -25,7 +25,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LatLng clickCoords;
     private Point clickPos, screenSize;
-    private RadialMenuWidget pieMenu;
+    private RadialMenuWidget typeSelectMenu, voteMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,56 +38,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         screenSize  = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
 
-        RadialMenuItem itemPlastic = new RadialMenuItem("0","Plastic");
-        RadialMenuItem itemPaper = new RadialMenuItem("1","Paper");
-        RadialMenuItem itemBio = new RadialMenuItem("2","Bio");
-        RadialMenuItem itemGlass = new RadialMenuItem("3","Glass");
-        RadialMenuItem itemMetal = new RadialMenuItem("4","Metal");
-
-        pieMenu = new RadialMenuWidget(MapActivity.this);
-        pieMenu.setOutlineColor(Color.BLACK, 225);
-        pieMenu.setInnerRingColor(0x33AA33, 180);
-        pieMenu.setOuterRingColor(0x0099CC, 180);
-        pieMenu.addMenuEntry(itemPlastic);
-        itemPlastic.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                pieMenu.dismiss();
-                putMarkerOnMap(0);
-            }
-        });
-        pieMenu.addMenuEntry(itemPaper);
-        itemPaper.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                pieMenu.dismiss();
-                putMarkerOnMap(1);
-            }
-        });
-        pieMenu.addMenuEntry(itemBio);
-        itemBio.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                pieMenu.dismiss();
-                putMarkerOnMap(2);
-            }
-        });
-        pieMenu.addMenuEntry(itemGlass);
-        itemGlass.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                pieMenu.dismiss();
-                putMarkerOnMap(3);
-            }
-        });
-        pieMenu.addMenuEntry(itemMetal);
-        itemMetal.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                pieMenu.dismiss();
-                putMarkerOnMap(4);
-            }
-        });
+        initPieMenu();
     }
 
     private void putMarkerOnMap(int id) {
@@ -112,24 +63,121 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
         if(clickCoords != null)
             mMap.addMarker(new MarkerOptions()
-                .position(clickCoords)
-                .title("Recycle Bin!"))
-                .setIcon(BitmapDescriptorFactory.fromBitmap(bmp));
+                    .position(clickCoords)
+                    .title("Recycle Bin!"))
+                    .setIcon(BitmapDescriptorFactory.fromBitmap(bmp));
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        UiSettings uiSettings = mMap.getUiSettings();
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        uiSettings.setAllGesturesEnabled(true);
+        uiSettings.setCompassEnabled(true);
+        uiSettings.setZoomControlsEnabled(true);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                clickPos = mMap.getProjection().toScreenLocation(marker.getPosition());
+                RelativeLayout rellay = (RelativeLayout) findViewById(R.id.rellay);
+                voteMenu.setX(clickPos.x - screenSize.x / 2);
+                voteMenu.setY(clickPos.y - screenSize.y / 2);
+                voteMenu.show(rellay);
+                return true; //return false for default behavior
+            }
+        });
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
                 clickPos = mMap.getProjection().toScreenLocation(latLng);
-                pieMenu.setVisibility(View.VISIBLE);
                 RelativeLayout rellay = (RelativeLayout) findViewById(R.id.rellay);
-                pieMenu.setX(clickPos.x-screenSize.x/2);
-                pieMenu.setY(clickPos.y-screenSize.y/2);
-                pieMenu.show(rellay);
+                typeSelectMenu.setX(clickPos.x - screenSize.x / 2);
+                typeSelectMenu.setY(clickPos.y - screenSize.y / 2);
+                typeSelectMenu.show(rellay);
                 clickCoords = latLng;
+            }
+        });
+
+    }
+
+    private void initPieMenu(){
+        RadialMenuItem itemPlastic = new RadialMenuItem("0","Plastic");
+        RadialMenuItem itemPaper = new RadialMenuItem("1","Paper");
+        RadialMenuItem itemBio = new RadialMenuItem("2","Bio");
+        RadialMenuItem itemGlass = new RadialMenuItem("3","Glass");
+        RadialMenuItem itemMetal = new RadialMenuItem("4","Metal");
+        RadialMenuItem voteUp = new RadialMenuItem("True","Vote Up");
+        RadialMenuItem voteDown = new RadialMenuItem("False","Vote Down");
+
+        typeSelectMenu = new RadialMenuWidget(MapActivity.this);
+        typeSelectMenu.setOutlineColor(Color.BLACK, 225);
+        typeSelectMenu.setInnerRingColor(0x33AA33, 180);
+        typeSelectMenu.setOuterRingColor(0x0099CC, 180);
+
+        voteMenu = new RadialMenuWidget(this);
+        voteMenu.setOutlineColor(Color.BLACK, 225);
+        voteMenu.setInnerRingColor(0x33AA33, 180);
+        voteMenu.setOuterRingColor(0x0099CC, 180);
+        voteMenu.setScaleX(0.7f);
+        voteMenu.setScaleY(0.7f);
+        voteMenu.setTextSize(20);
+        voteMenu.setTextColor(Color.BLACK, 255);
+        voteUp.setDisplayIcon(R.drawable.voteup);
+        voteMenu.addMenuEntry(voteUp);
+        voteUp.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                voteMenu.dismiss();
+            }
+        });
+        voteDown.setDisplayIcon(R.drawable.votedown);
+        voteMenu.addMenuEntry(voteDown);
+        voteDown.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                voteMenu.dismiss();
+            }
+        });
+
+        typeSelectMenu.addMenuEntry(itemPlastic);
+        itemPlastic.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                typeSelectMenu.dismiss();
+                putMarkerOnMap(0);
+            }
+        });
+        typeSelectMenu.addMenuEntry(itemPaper);
+        itemPaper.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                typeSelectMenu.dismiss();
+                putMarkerOnMap(1);
+            }
+        });
+        typeSelectMenu.addMenuEntry(itemBio);
+        itemBio.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                typeSelectMenu.dismiss();
+                putMarkerOnMap(2);
+            }
+        });
+        typeSelectMenu.addMenuEntry(itemGlass);
+        itemGlass.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                typeSelectMenu.dismiss();
+                putMarkerOnMap(3);
+            }
+        });
+        typeSelectMenu.addMenuEntry(itemMetal);
+        itemMetal.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                typeSelectMenu.dismiss();
+                putMarkerOnMap(4);
             }
         });
     }

@@ -11,14 +11,12 @@ import android.widget.Button;
 
 public class MenuActivity extends ActionBarActivity {
 
-    private Button launchMap, launchOverview;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        launchMap = (Button) findViewById(R.id.launch_map);
-        launchOverview = (Button) findViewById(R.id.launch_overview);
+        Button launchMap = (Button) findViewById(R.id.launch_map);
+        Button launchOverview = (Button) findViewById(R.id.launch_overview);
         launchMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

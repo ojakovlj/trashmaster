@@ -9,7 +9,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Launch Map Activity"
+        android:text="@string/launch_map_activity"
         android:id="@+id/launch_map"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -18,7 +18,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Overview Activity"
+        android:text="@string/launch_overview_activity"
         android:id="@+id/launch_overview"
         android:layout_below="@+id/launch_map"
         android:layout_alignParentLeft="true"

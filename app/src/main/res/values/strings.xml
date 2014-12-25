@@ -2,10 +2,12 @@
 <resources>
 
     <string name="app_name">Trashmaster</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_overview">OverviewActivity</string>
+    <string name="launch_map_activity">Launch Map Activity</string>
+    <string name="launch_overview_activity">Launch Overview Activity</string>
+
     <string-array name="type_choices">
         <item>NONE</item>
         <item>Plastic</item>
