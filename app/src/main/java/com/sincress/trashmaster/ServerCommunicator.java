@@ -1,5 +1,7 @@
 package com.sincress.trashmaster;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -36,6 +38,11 @@ public class ServerCommunicator {
     private static final String TAG_MARKERS = "markers";
     private JSONArray markersRead;
     private ArrayList<MarkerEntry> markers = new ArrayList<>();
+
+    MapActivity caller;
+    public ServerCommunicator(Activity activity) {
+        caller = (MapActivity)activity;
+    }
 
     public void getMarkersForArea(/*TODO*/){
         new LoadMarkers().execute(); //load markers from the database
@@ -87,8 +94,7 @@ public class ServerCommunicator {
         }
 
         protected void onPostExecute(String file_url) {
-            // updating UI from Background Thread
-            MapActivity.populateMapWithMarkers(markers);
+            caller.populateMapWithMarkers(markers); //callback function
         }
     }
 }

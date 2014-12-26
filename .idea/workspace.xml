@@ -18,11 +18,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="779ead9f-2d53-43b7-a938-63d1e7faeb03" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/JSONParser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/MarkerEntry.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/MapActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/MapActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Trashmaster.iws" />
@@ -46,12 +43,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MapActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MapActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/MapActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2550">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.33214286" vertical-offset="1310" max-vertical-offset="1870">
+              <caret line="142" column="44" selection-start-line="142" selection-start-column="44" selection-end-line="142" selection-end-column="44" />
+              <folding>
+                <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+                <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+                <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+                <element signature="e#5193#5736#0" expanded="true" />
+                <element signature="e#5725#5726#0" expanded="true" />
+                <element signature="e#6350#6351#0" expanded="true" />
+                <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+                <element signature="e#7605#7773#0" expanded="true" />
+                <element signature="e#7762#7763#0" expanded="true" />
+                <element signature="e#7909#8077#0" expanded="true" />
+                <element signature="e#8066#8067#0" expanded="true" />
+                <element signature="e#8172#8381#0" expanded="true" />
+                <element signature="e#8370#8371#0" expanded="true" />
+                <element signature="e#8471#8680#0" expanded="true" />
+                <element signature="e#8669#8670#0" expanded="true" />
+                <element signature="e#8766#8975#0" expanded="true" />
+                <element signature="e#8964#8965#0" expanded="true" />
+                <element signature="e#9065#9274#0" expanded="true" />
+                <element signature="e#9263#9264#0" expanded="true" />
+                <element signature="e#9364#9573#0" expanded="true" />
+                <element signature="e#9562#9563#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -59,7 +78,7 @@
       <file leaf-file-name="MarkerEntry.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/MarkerEntry.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="306">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
               <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
               <folding />
             </state>
@@ -76,12 +95,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerCommunicator.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ServerCommunicator.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.4422536" vertical-offset="102" max-vertical-offset="1496">
-              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="239" max-vertical-offset="1564">
+              <caret line="70" column="43" selection-start-line="70" selection-start-column="43" selection-end-line="70" selection-end-column="43" />
+              <folding>
+                <element signature="e#1468#1469#0" expanded="true" />
+                <element signature="e#1514#1515#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1112,7 +1134,11 @@
       <created>1419512308977</created>
       <updated>1419512308977</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Dodan JSONParser, MarkerEntry objekti, ServerCommunicator i uspostavljena osnovna funkcionalnost parsiranja svih zapisa (markera) s mySQL baze podataka na localhostu">
+      <created>1419589597813</created>
+      <updated>1419589597813</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1124,7 +1150,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32993197" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34863946" sideWeight="0.42511347" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34863946" sideWeight="0.42511347" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1200,7 +1226,8 @@
     <MESSAGE value="Sredjeno pokazivanje izbornika tipa kontejnera pri dodavanju i sitnice" />
     <MESSAGE value="Spinner zamjenjen fensi radijalnim izbornikom" />
     <MESSAGE value="Dodane kontrole na mapu i ocisceni warnings" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dodane kontrole na mapu i ocisceni warnings" />
+    <MESSAGE value="Dodan JSONParser, MarkerEntry objekti, ServerCommunicator i uspostavljena osnovna funkcionalnost parsiranja svih zapisa (markera) s mySQL baze podataka na localhostu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dodan JSONParser, MarkerEntry objekti, ServerCommunicator i uspostavljena osnovna funkcionalnost parsiranja svih zapisa (markera) s mySQL baze podataka na localhostu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1212,7 +1239,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1804" max-vertical-offset="3111">
           <caret line="136" column="23" selection-start-line="136" selection-start-column="23" selection-end-line="136" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+            <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#5193#5736#0" expanded="true" />
+            <element signature="e#5725#5726#0" expanded="true" />
+            <element signature="e#6350#6351#0" expanded="true" />
+            <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#7605#7773#0" expanded="true" />
+            <element signature="e#7762#7763#0" expanded="true" />
+            <element signature="e#7909#8077#0" expanded="true" />
+            <element signature="e#8066#8067#0" expanded="true" />
+            <element signature="e#8172#8381#0" expanded="true" />
+            <element signature="e#8370#8371#0" expanded="true" />
+            <element signature="e#8471#8680#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8766#8975#0" expanded="true" />
+            <element signature="e#8964#8965#0" expanded="true" />
+            <element signature="e#9065#9274#0" expanded="true" />
+            <element signature="e#9263#9264#0" expanded="true" />
+            <element signature="e#9364#9573#0" expanded="true" />
+            <element signature="e#9562#9563#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1264,7 +1313,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1768">
           <caret line="53" column="53" selection-start-line="53" selection-start-column="53" selection-end-line="53" selection-end-column="53" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+            <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#5193#5736#0" expanded="true" />
+            <element signature="e#5725#5726#0" expanded="true" />
+            <element signature="e#6350#6351#0" expanded="true" />
+            <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#7605#7773#0" expanded="true" />
+            <element signature="e#7762#7763#0" expanded="true" />
+            <element signature="e#7909#8077#0" expanded="true" />
+            <element signature="e#8066#8067#0" expanded="true" />
+            <element signature="e#8172#8381#0" expanded="true" />
+            <element signature="e#8370#8371#0" expanded="true" />
+            <element signature="e#8471#8680#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8766#8975#0" expanded="true" />
+            <element signature="e#8964#8965#0" expanded="true" />
+            <element signature="e#9065#9274#0" expanded="true" />
+            <element signature="e#9263#9264#0" expanded="true" />
+            <element signature="e#9364#9573#0" expanded="true" />
+            <element signature="e#9562#9563#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1294,7 +1365,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1224">
           <caret line="81" column="40" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+            <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#5193#5736#0" expanded="true" />
+            <element signature="e#5725#5726#0" expanded="true" />
+            <element signature="e#6350#6351#0" expanded="true" />
+            <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#7605#7773#0" expanded="true" />
+            <element signature="e#7762#7763#0" expanded="true" />
+            <element signature="e#7909#8077#0" expanded="true" />
+            <element signature="e#8066#8067#0" expanded="true" />
+            <element signature="e#8172#8381#0" expanded="true" />
+            <element signature="e#8370#8371#0" expanded="true" />
+            <element signature="e#8471#8680#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8766#8975#0" expanded="true" />
+            <element signature="e#8964#8965#0" expanded="true" />
+            <element signature="e#9065#9274#0" expanded="true" />
+            <element signature="e#9263#9264#0" expanded="true" />
+            <element signature="e#9364#9573#0" expanded="true" />
+            <element signature="e#9562#9563#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1324,7 +1417,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
           <caret line="12" column="74" selection-start-line="12" selection-start-column="74" selection-end-line="12" selection-end-column="74" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+            <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#5193#5736#0" expanded="true" />
+            <element signature="e#5725#5726#0" expanded="true" />
+            <element signature="e#6350#6351#0" expanded="true" />
+            <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#7605#7773#0" expanded="true" />
+            <element signature="e#7762#7763#0" expanded="true" />
+            <element signature="e#7909#8077#0" expanded="true" />
+            <element signature="e#8066#8067#0" expanded="true" />
+            <element signature="e#8172#8381#0" expanded="true" />
+            <element signature="e#8370#8371#0" expanded="true" />
+            <element signature="e#8471#8680#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8766#8975#0" expanded="true" />
+            <element signature="e#8964#8965#0" expanded="true" />
+            <element signature="e#9065#9274#0" expanded="true" />
+            <element signature="e#9263#9264#0" expanded="true" />
+            <element signature="e#9364#9573#0" expanded="true" />
+            <element signature="e#9562#9563#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1351,7 +1466,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="646">
           <caret line="12" column="74" selection-start-line="12" selection-start-column="74" selection-end-line="12" selection-end-column="74" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+            <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#5193#5736#0" expanded="true" />
+            <element signature="e#5725#5726#0" expanded="true" />
+            <element signature="e#6350#6351#0" expanded="true" />
+            <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#7605#7773#0" expanded="true" />
+            <element signature="e#7762#7763#0" expanded="true" />
+            <element signature="e#7909#8077#0" expanded="true" />
+            <element signature="e#8066#8067#0" expanded="true" />
+            <element signature="e#8172#8381#0" expanded="true" />
+            <element signature="e#8370#8371#0" expanded="true" />
+            <element signature="e#8471#8680#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8766#8975#0" expanded="true" />
+            <element signature="e#8964#8965#0" expanded="true" />
+            <element signature="e#9065#9274#0" expanded="true" />
+            <element signature="e#9263#9264#0" expanded="true" />
+            <element signature="e#9364#9573#0" expanded="true" />
+            <element signature="e#9562#9563#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1598,6 +1735,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38311687" vertical-offset="3367" max-vertical-offset="10710">
           <caret line="232" column="0" selection-start-line="232" selection-start-column="0" selection-end-line="232" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="239" max-vertical-offset="1564">
+          <caret line="70" column="43" selection-start-line="70" selection-start-column="43" selection-end-line="70" selection-end-column="43" />
+          <folding>
+            <element signature="e#1468#1469#0" expanded="true" />
+            <element signature="e#1514#1515#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/JSONParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="902" max-vertical-offset="1394">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1611,25 +1768,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/MapActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2550">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/JSONParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="902" max-vertical-offset="1394">
-          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4422536" vertical-offset="102" max-vertical-offset="1496">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.33214286" vertical-offset="1310" max-vertical-offset="1870">
+          <caret line="142" column="44" selection-start-line="142" selection-start-column="44" selection-end-line="142" selection-end-column="44" />
+          <folding>
+            <element signature="docComment;method#populateMapWithMarkers#0;class#MapActivity#0" expanded="false" />
+            <element signature="docComment;method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="method#addMarkerToMap#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#5193#5736#0" expanded="true" />
+            <element signature="e#5725#5726#0" expanded="true" />
+            <element signature="e#6350#6351#0" expanded="true" />
+            <element signature="method#initPieMenu#0;class#MapActivity#0" expanded="false" />
+            <element signature="e#7605#7773#0" expanded="true" />
+            <element signature="e#7762#7763#0" expanded="true" />
+            <element signature="e#7909#8077#0" expanded="true" />
+            <element signature="e#8066#8067#0" expanded="true" />
+            <element signature="e#8172#8381#0" expanded="true" />
+            <element signature="e#8370#8371#0" expanded="true" />
+            <element signature="e#8471#8680#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8766#8975#0" expanded="true" />
+            <element signature="e#8964#8965#0" expanded="true" />
+            <element signature="e#9065#9274#0" expanded="true" />
+            <element signature="e#9263#9264#0" expanded="true" />
+            <element signature="e#9364#9573#0" expanded="true" />
+            <element signature="e#9562#9563#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

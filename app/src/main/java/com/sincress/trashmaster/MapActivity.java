@@ -1,5 +1,6 @@
 package com.sincress.trashmaster;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -42,17 +43,56 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         getWindowManager().getDefaultDisplay().getSize(screenSize);
 
         initPieMenu();
-        ServerCommunicator servComm = new ServerCommunicator(); //TODO: WORK IN PROGRESS
-        servComm.getMarkersForArea(); //TODO: WORK IN PROGRESS
+        ServerCommunicator servComm = new ServerCommunicator(this);
+        servComm.getMarkersForArea();
     }
 
-    //TODO: WORK IN PROGRESS
-    public static void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB){
-        for(int i=0; i<readFromDB.size(); i++)
-            Log.e("DB: ", "Got Marker: "+readFromDB.get(i).latitude+", "+readFromDB.get(i).longitude);
+    /**
+     * This function receives the callback from the instance of our ServerCommunicator when the
+     * function getMarkersForArea is called
+     * @param readFromDB
+     */
+    public final void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB){
+        for(int i=0; i<readFromDB.size(); i++) {
+            Log.e("DB: ", "Got Marker: " + readFromDB.get(i).latitude + ", " + readFromDB.get(i).longitude);
+            putMarkerOnMap(readFromDB.get(i));
+        }
     }
 
-    private void putMarkerOnMap(int id) {
+
+    private void putMarkerOnMap(MarkerEntry thisMarker) {
+        Bitmap bmp;
+
+        switch(thisMarker.type){
+            case 0: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_yellow);
+                break;
+            case 1: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_blue);
+                break;
+            case 2: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_brown);
+                break;
+            case 3: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_grey);
+                break;
+            case 4: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_green);
+                break;
+            default: bmp =  BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+                break;
+        }
+
+        bmp = Bitmap.createScaledBitmap(bmp, 35, 35, false);
+        LatLng markerPos = new LatLng(thisMarker.latitude, thisMarker.longitude);
+
+        mMap.addMarker(new MarkerOptions()
+                .position(markerPos)
+                .title("Recycle Bin!"))
+                .setIcon(BitmapDescriptorFactory.fromBitmap(bmp));
+    }
+
+    /**
+     * This method is invoked when a long press is detected on the map. It places a marker on the map and
+     * sends its data to the database where it will be stored.
+     * @param id
+     */
+    private void addMarkerToMap(int id) {
         Bitmap bmp;
 
         switch(id){
@@ -87,6 +127,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         uiSettings.setAllGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
+        //set the onclicklistener for markers - show vote menu
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -98,6 +139,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 return true; //return false for default behavior
             }
         });
+        //set the onlongclicklistener for adding markers to map
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
@@ -156,7 +198,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void execute() {
                 typeSelectMenu.dismiss();
-                putMarkerOnMap(0);
+                addMarkerToMap(0);
             }
         });
         typeSelectMenu.addMenuEntry(itemPaper);
@@ -164,7 +206,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void execute() {
                 typeSelectMenu.dismiss();
-                putMarkerOnMap(1);
+                addMarkerToMap(1);
             }
         });
         typeSelectMenu.addMenuEntry(itemBio);
@@ -172,7 +214,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void execute() {
                 typeSelectMenu.dismiss();
-                putMarkerOnMap(2);
+                addMarkerToMap(2);
             }
         });
         typeSelectMenu.addMenuEntry(itemGlass);
@@ -180,7 +222,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void execute() {
                 typeSelectMenu.dismiss();
-                putMarkerOnMap(3);
+                addMarkerToMap(3);
             }
         });
         typeSelectMenu.addMenuEntry(itemMetal);
@@ -188,7 +230,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void execute() {
                 typeSelectMenu.dismiss();
-                putMarkerOnMap(4);
+                addMarkerToMap(4);
             }
         });
     }
