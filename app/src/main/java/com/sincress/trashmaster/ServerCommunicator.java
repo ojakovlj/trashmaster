@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +30,7 @@ public class ServerCommunicator {
 
     private JSONParser jParser = new JSONParser();
     private static String url_get_markers = "http://10.0.2.2/Trashmaster/get_markers.php"; //TODO
+    private static String url_add_marker = "http://10.0.2.2/Trashmaster/add_marker.php"; //TODO
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_TYPE = "type";
     private static final String TAG_LATITUDE = "latitude";
@@ -40,18 +42,24 @@ public class ServerCommunicator {
     private ArrayList<MarkerEntry> markers = new ArrayList<>();
 
     MapActivity caller;
+
     public ServerCommunicator(Activity activity) {
-        caller = (MapActivity)activity;
+        caller = (MapActivity) activity;
     }
 
-    public void getMarkersForArea(/*TODO*/){
+    /**
+     * This method will invoke an AsyncTask which will retrieve markers from the map and
+     * place them in an ArrayList<MarkerEntry>. The callback will default to the
+     * populateMapWithMarkers(ArrayList<MarkerEntry>) method.
+     */
+    public void getMarkersForArea(/*TODO*/) {
         new LoadMarkers().execute(); //load markers from the database
     }
 
     private class LoadMarkers extends AsyncTask<String, String, String> {
         /**
-         * getting All products from url
-         * */
+         * getting All markers from url
+         */
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -66,11 +74,11 @@ public class ServerCommunicator {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // products found
-                    // Getting Array of Products
+                    // Markers found
+                    // Getting Array of Markers
                     markersRead = json.getJSONArray(TAG_MARKERS);
 
-                    // looping through All Products
+                    // looping through All Markers
                     for (int i = 0; i < markersRead.length(); i++) {
                         JSONObject c = markersRead.getJSONObject(i);
 
@@ -84,7 +92,7 @@ public class ServerCommunicator {
                         // Storing each json item in variable
                     }
                 } else {
-                    // no products found
+                    // no Markers found
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -95,6 +103,57 @@ public class ServerCommunicator {
 
         protected void onPostExecute(String file_url) {
             caller.populateMapWithMarkers(markers); //callback function
+        }
+    }
+
+    /**
+     * This method adds a marker to the database. The marker must be described by a MarkerEntry
+     * class and all its fields must be filled. The callback will default to the
+     * displayConfirmationMsg(String outcome) where outcome is "Success" or "Failure"
+     * @param markerToAdd
+     */
+    public void addMarkerToDB(MarkerEntry markerToAdd) {
+        new AddMarker(markerToAdd).execute(); //add marker to the database
+    }
+
+    private class AddMarker extends AsyncTask<String, String, String> {
+        /**
+         * adding a marker to DB on given url
+         */
+        private MarkerEntry markerToAdd;
+
+        public AddMarker(MarkerEntry mkr) {
+            markerToAdd = mkr;
+        }
+
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("downvotes", String.valueOf(markerToAdd.downvotes)));
+            params.add(new BasicNameValuePair("longitude", String.valueOf(markerToAdd.longitude)));
+            params.add(new BasicNameValuePair("latitude", String.valueOf(markerToAdd.latitude)));
+            params.add(new BasicNameValuePair("upvotes", String.valueOf(markerToAdd.upvotes)));
+            params.add(new BasicNameValuePair("type", String.valueOf(markerToAdd.type)));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_add_marker, "POST", params);
+
+            // Check your log cat for JSON reponse
+            Log.d("All Products: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    caller.displayConfirmationMsg("Success");
+                } else {
+                    caller.displayConfirmationMsg("Failure");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }

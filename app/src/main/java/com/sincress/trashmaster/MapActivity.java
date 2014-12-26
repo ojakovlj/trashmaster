@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -30,6 +31,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private LatLng clickCoords;
     private Point clickPos, screenSize;
     private RadialMenuWidget typeSelectMenu, voteMenu;
+    private ServerCommunicator servComm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         getWindowManager().getDefaultDisplay().getSize(screenSize);
 
         initPieMenu();
-        ServerCommunicator servComm = new ServerCommunicator(this);
+        servComm = new ServerCommunicator(this);
         servComm.getMarkersForArea();
     }
 
@@ -59,7 +61,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         }
     }
 
+    public void displayConfirmationMsg(final String outcome){
+        runOnUiThread(new Runnable() {
+            public void run() {
+                if(outcome.equals("Success"))
+                    Toast.makeText(MapActivity.this, "Marker successfully added to database!", Toast.LENGTH_SHORT).show();
+                if(outcome.equals("Failure"))
+                    Toast.makeText(MapActivity.this, "Error: unable to add marker to database!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    /**
+     * This method is used for putting markers on the map after they've been fetched from the database
+     * @param thisMarker
+     */
     private void putMarkerOnMap(MarkerEntry thisMarker) {
         Bitmap bmp;
 
@@ -117,6 +133,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     .position(clickCoords)
                     .title("Recycle Bin!"))
                     .setIcon(BitmapDescriptorFactory.fromBitmap(bmp));
+
+        MarkerEntry marker = new MarkerEntry();
+        marker.longitude = clickCoords.longitude;
+        marker.latitude = clickCoords.latitude;
+        marker.upvotes = marker.downvotes = 0;
+        marker.type = id;
+        //Add the marker to the database as well!
+        servComm.addMarkerToDB(marker);
     }
 
     @Override
