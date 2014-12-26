@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
 import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
+
+import java.util.ArrayList;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
@@ -35,10 +38,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        screenSize  = new Point();
+        screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
 
         initPieMenu();
+        ServerCommunicator servComm = new ServerCommunicator(); //TODO: WORK IN PROGRESS
+        servComm.getMarkersForArea(); //TODO: WORK IN PROGRESS
+    }
+
+    //TODO: WORK IN PROGRESS
+    public static void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB){
+        for(int i=0; i<readFromDB.size(); i++)
+            Log.e("DB: ", "Got Marker: "+readFromDB.get(i).latitude+", "+readFromDB.get(i).longitude);
     }
 
     private void putMarkerOnMap(int id) {
