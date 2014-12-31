@@ -15,7 +15,9 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
@@ -48,7 +50,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
         initPieMenu();
         servComm = new ServerCommunicator(this);
-        servComm.getMarkersForArea();
     }
 
     /**
@@ -57,6 +58,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
      * @param readFromDB
      */
     public final void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB){
+        markersOnMap.clear();
+        mMap.clear();
         markersOnMap.addAll(readFromDB);
         for(int i=0; i<readFromDB.size(); i++) {
             Log.e("DB: ", "Got Marker: " + readFromDB.get(i).latitude + ", " + readFromDB.get(i).longitude);
@@ -156,6 +159,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        //get desired markers now, ASAP
+        servComm.getMarkersForArea(mMap.getProjection().getVisibleRegion().latLngBounds.northeast,
+                mMap.getProjection().getVisibleRegion().latLngBounds.southwest);
+
         UiSettings uiSettings = mMap.getUiSettings();
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         uiSettings.setAllGesturesEnabled(true);
@@ -164,7 +171,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         //set the onclicklistener for markers - show vote menu
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public boolean onMarkerClick(final Marker marker) {
                 MarkerEntry thisMarker = null;
                 int i;
                 clickPos = mMap.getProjection().toScreenLocation(marker.getPosition());
@@ -202,8 +209,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     @Override
                     public void execute() {
 
-                        if(finalThisMarker.downvotes > 2 && Math.abs(finalThisMarker.upvotes-finalThisMarker.downvotes) > 4)
+                        if(finalThisMarker.downvotes > 2) { //delete it
                             servComm.deleteMarker(finalThisMarker);
+                            markersOnMap.remove(finalI);
+                            marker.setVisible(false);
+                            marker.remove();
+                        }
                         else{
                             servComm.updateMarkerVotes(finalThisMarker, "Decrement votes");
                             markersOnMap.get(finalI).downvotes++;
@@ -229,7 +240,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 clickCoords = latLng;
             }
         });
-
+        mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition position) {
+                LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+                LatLng upperRight = bounds.northeast;
+                LatLng lowerLeft = bounds.southwest;
+                servComm.getMarkersForArea(upperRight, lowerLeft);
+            }
+        });
     }
 
     private void initVoteMenu() {

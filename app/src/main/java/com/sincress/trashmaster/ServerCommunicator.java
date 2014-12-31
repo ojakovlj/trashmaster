@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -54,17 +56,23 @@ public class ServerCommunicator {
      * place them in an ArrayList<MarkerEntry>. The callback will default to the
      * populateMapWithMarkers(ArrayList<MarkerEntry>) method.
      */
-    public void getMarkersForArea(/*TODO*/) {
-        new LoadMarkers().execute(); //load markers from the database
+    public void getMarkersForArea(LatLng UL, LatLng LR) {
+        new LoadMarkers(UL, LR).execute(); //load markers from the database
     }
 
     private class LoadMarkers extends AsyncTask<String, String, String> {
         /**
          * getting All markers from url
          */
+        LatLng NE, SW;
+        public LoadMarkers(LatLng ULbound, LatLng LRbound){
+            NE = ULbound; //NORTHEAST
+            SW = LRbound; //SOUTHWEST
+        }
+
         protected String doInBackground(String... args) {
             // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            List<NameValuePair> params = new ArrayList<>();
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_get_markers, "GET", params);
 
@@ -79,7 +87,7 @@ public class ServerCommunicator {
                     // Markers found
                     // Getting Array of Markers
                     markersRead = json.getJSONArray(TAG_MARKERS);
-
+                    markers.clear(); //OR ELSE YOU GET LIKE 5 MILLION MARKERS
                     // looping through All Markers
                     for (int i = 0; i < markersRead.length(); i++) {
                         JSONObject c = markersRead.getJSONObject(i);
@@ -104,6 +112,10 @@ public class ServerCommunicator {
         }
 
         protected void onPostExecute(String file_url) {
+            for(int i=0; i<markers.size(); i++)
+                if((markers.get(i).latitude > NE.latitude && markers.get(i).latitude < SW.latitude) ||
+                   (markers.get(i).longitude > NE.longitude && markers.get(i).longitude < SW.longitude))
+                    markers.remove(i);
             caller.populateMapWithMarkers(markers); //callback function
         }
     }
@@ -130,7 +142,7 @@ public class ServerCommunicator {
 
         protected String doInBackground(String... args) {
             // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("downvotes", String.valueOf(markerToAdd.downvotes)));
             params.add(new BasicNameValuePair("longitude", String.valueOf(markerToAdd.longitude)));
             params.add(new BasicNameValuePair("latitude", String.valueOf(markerToAdd.latitude)));
@@ -231,6 +243,7 @@ public class ServerCommunicator {
             params.add(new BasicNameValuePair("latitude", String.valueOf(markerToDel.latitude)));
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_delete_marker, "POST", params);
+            markers.remove(markerToDel);
 
             try {
                 // Checking for SUCCESS TAG
