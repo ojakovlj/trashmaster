@@ -30,7 +30,9 @@ public class ServerCommunicator {
 
     private JSONParser jParser = new JSONParser();
     private static String url_get_markers = "http://10.0.2.2/Trashmaster/get_markers.php"; //TODO
-    private static String url_add_marker = "http://10.0.2.2/Trashmaster/add_marker.php"; //TODO
+    private static String url_add_marker = "http://10.0.2.2/Trashmaster/add_marker.php";
+    private static String url_update_marker = "http://10.0.2.2/Trashmaster/update_marker.php";
+    private static String url_delete_marker = "http://10.0.2.2/Trashmaster/delete_marker.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_TYPE = "type";
     private static final String TAG_LATITUDE = "latitude";
@@ -148,6 +150,96 @@ public class ServerCommunicator {
                     caller.displayConfirmationMsg("Success");
                 } else {
                     caller.displayConfirmationMsg("Failure");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    public void updateMarkerVotes(MarkerEntry markerToUpdt, String operation){
+        if(operation.equals("Increment votes"))
+            new UpdateMarker(markerToUpdt, "increment").execute();
+        if(operation.equals("Decrement votes"))
+            new UpdateMarker(markerToUpdt, "decrement").execute();
+    }
+
+    private class UpdateMarker extends AsyncTask<String, String, String> {
+        /**
+         * adding a marker to DB on given url
+         */
+        private MarkerEntry markerToUpdt;
+        private String operation;
+
+        public UpdateMarker(MarkerEntry mkr, String requiredOperation) {
+            markerToUpdt = mkr;
+            operation = requiredOperation;
+        }
+
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("downvotes", String.valueOf(markerToUpdt.downvotes)));
+            params.add(new BasicNameValuePair("longitude", String.valueOf(markerToUpdt.longitude)));
+            params.add(new BasicNameValuePair("latitude", String.valueOf(markerToUpdt.latitude)));
+            params.add(new BasicNameValuePair("upvotes", String.valueOf(markerToUpdt.upvotes)));
+            params.add(new BasicNameValuePair("type", String.valueOf(markerToUpdt.type)));
+            params.add(new BasicNameValuePair("operation", operation));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_update_marker, "POST", params);
+
+            // Check your log cat for JSON reponse
+            Log.d("All Products: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    caller.displayConfirmationMsg("Successfully reached DB");
+                } else {
+                    caller.displayConfirmationMsg("Failure in DB comms");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    public void deleteMarker(MarkerEntry markerToDelete){
+        new DeleteMarker(markerToDelete).execute();
+    }
+
+    private class DeleteMarker extends AsyncTask<String, String, String> {
+        /**
+         * deleting a marker from database
+         */
+        private MarkerEntry markerToDel;
+
+        public DeleteMarker(MarkerEntry mkr) {
+            markerToDel = mkr;
+        }
+
+        protected String doInBackground(String... args) {
+            // Building Parameters, we pass only lat and lng because they're the primary key
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("longitude", String.valueOf(markerToDel.longitude)));
+            params.add(new BasicNameValuePair("latitude", String.valueOf(markerToDel.latitude)));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_delete_marker, "POST", params);
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    caller.displayConfirmationMsg("Successfully reached DB");
+                } else {
+                    caller.displayConfirmationMsg("Failure in DB comms");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

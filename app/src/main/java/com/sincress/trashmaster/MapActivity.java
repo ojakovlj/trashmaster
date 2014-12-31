@@ -1,6 +1,5 @@
 package com.sincress.trashmaster;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -32,6 +31,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private Point clickPos, screenSize;
     private RadialMenuWidget typeSelectMenu, voteMenu;
     private ServerCommunicator servComm;
+    private ArrayList<MarkerEntry> markersOnMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        markersOnMap = new ArrayList<>();
 
         screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
@@ -55,12 +57,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
      * @param readFromDB
      */
     public final void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB){
+        markersOnMap.addAll(readFromDB);
         for(int i=0; i<readFromDB.size(); i++) {
             Log.e("DB: ", "Got Marker: " + readFromDB.get(i).latitude + ", " + readFromDB.get(i).longitude);
             putMarkerOnMap(readFromDB.get(i));
         }
     }
 
+    /**
+     * This method receives the callback from the AsyncTask AddMarker in the ServerCommunicator.
+     * It simply displays a message describing the outcome of the add-to-database operation
+     * @param outcome
+     */
     public void displayConfirmationMsg(final String outcome){
         runOnUiThread(new Runnable() {
             public void run() {
@@ -141,6 +149,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         marker.type = id;
         //Add the marker to the database as well!
         servComm.addMarkerToDB(marker);
+        //Add marker to list of current markers on the map
+        markersOnMap.add(marker);
     }
 
     @Override
@@ -155,8 +165,52 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                MarkerEntry thisMarker = null;
+                int i;
                 clickPos = mMap.getProjection().toScreenLocation(marker.getPosition());
                 RelativeLayout rellay = (RelativeLayout) findViewById(R.id.rellay);
+
+                //find MarkerEntry which represents our marker:
+                for(i=0; i<markersOnMap.size(); i++){
+                    thisMarker = markersOnMap.get(i);
+                    if(thisMarker.latitude == marker.getPosition().latitude &&
+                       thisMarker.longitude == marker.getPosition().longitude)
+                        break;
+                }
+                //prepare the votemenu for displaying number of upvotes/downvotes
+
+                RadialMenuItem voteUp = new RadialMenuItem("True","Good: "+thisMarker.upvotes);
+                RadialMenuItem voteDown = new RadialMenuItem("False","Bad: "+thisMarker.downvotes);
+                initVoteMenu();
+                voteUp.setDisplayIcon(R.drawable.voteup);
+                voteMenu.addMenuEntry(voteUp);
+                //nuisance
+                final MarkerEntry finalThisMarker = thisMarker;
+                final int finalI = i;
+                voteUp.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        servComm.updateMarkerVotes(finalThisMarker, "Increment votes");
+                        markersOnMap.get(finalI).upvotes++;
+                        voteMenu.dismiss();
+                    }
+                });
+                voteDown.setDisplayIcon(R.drawable.votedown);
+                voteMenu.addMenuEntry(voteDown);
+
+                voteDown.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+
+                        if(finalThisMarker.downvotes > 2 && Math.abs(finalThisMarker.upvotes-finalThisMarker.downvotes) > 4)
+                            servComm.deleteMarker(finalThisMarker);
+                        else{
+                            servComm.updateMarkerVotes(finalThisMarker, "Decrement votes");
+                            markersOnMap.get(finalI).downvotes++;
+                        }
+                        voteMenu.dismiss();
+                    }
+                });
                 voteMenu.setX(clickPos.x - screenSize.x / 2);
                 voteMenu.setY(clickPos.y - screenSize.y / 2);
                 voteMenu.show(rellay);
@@ -178,20 +232,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     }
 
-    private void initPieMenu(){
-        RadialMenuItem itemPlastic = new RadialMenuItem("0","Plastic");
-        RadialMenuItem itemPaper = new RadialMenuItem("1","Paper");
-        RadialMenuItem itemBio = new RadialMenuItem("2","Bio");
-        RadialMenuItem itemGlass = new RadialMenuItem("3","Glass");
-        RadialMenuItem itemMetal = new RadialMenuItem("4","Metal");
-        RadialMenuItem voteUp = new RadialMenuItem("True","Vote Up");
-        RadialMenuItem voteDown = new RadialMenuItem("False","Vote Down");
-
-        typeSelectMenu = new RadialMenuWidget(MapActivity.this);
-        typeSelectMenu.setOutlineColor(Color.BLACK, 225);
-        typeSelectMenu.setInnerRingColor(0x33AA33, 180);
-        typeSelectMenu.setOuterRingColor(0x0099CC, 180);
-
+    private void initVoteMenu() {
         voteMenu = new RadialMenuWidget(this);
         voteMenu.setOutlineColor(Color.BLACK, 225);
         voteMenu.setInnerRingColor(0x33AA33, 180);
@@ -200,22 +241,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         voteMenu.setScaleY(0.7f);
         voteMenu.setTextSize(20);
         voteMenu.setTextColor(Color.BLACK, 255);
-        voteUp.setDisplayIcon(R.drawable.voteup);
-        voteMenu.addMenuEntry(voteUp);
-        voteUp.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                voteMenu.dismiss();
-            }
-        });
-        voteDown.setDisplayIcon(R.drawable.votedown);
-        voteMenu.addMenuEntry(voteDown);
-        voteDown.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                voteMenu.dismiss();
-            }
-        });
+    }
+
+    private void initPieMenu(){
+        RadialMenuItem itemPlastic = new RadialMenuItem("0","Plastic");
+        RadialMenuItem itemPaper = new RadialMenuItem("1","Paper");
+        RadialMenuItem itemBio = new RadialMenuItem("2","Bio");
+        RadialMenuItem itemGlass = new RadialMenuItem("3","Glass");
+        RadialMenuItem itemMetal = new RadialMenuItem("4","Metal");
+
+        typeSelectMenu = new RadialMenuWidget(MapActivity.this);
+        typeSelectMenu.setOutlineColor(Color.BLACK, 225);
+        typeSelectMenu.setInnerRingColor(0x33AA33, 180);
+        typeSelectMenu.setOuterRingColor(0x0099CC, 180);
 
         typeSelectMenu.addMenuEntry(itemPlastic);
         itemPlastic.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
