@@ -33,7 +33,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private Point clickPos, screenSize;
     private RadialMenuWidget typeSelectMenu, voteMenu;
     private ServerCommunicator servComm;
-    private ArrayList<MarkerEntry> markersOnMap;
+    private ArrayList<MarkerEntry> markersOnMap, myRecentMarkers; //myrecentmarkers - for "undo" operations
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        markersOnMap = new ArrayList<>();
+        markersOnMap =  new ArrayList<>();
+        myRecentMarkers = new ArrayList<>();
 
         screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
@@ -154,6 +155,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         servComm.addMarkerToDB(marker);
         //Add marker to list of current markers on the map
         markersOnMap.add(marker);
+        myRecentMarkers.add(marker);
     }
 
     @Override
@@ -177,6 +179,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 clickPos = mMap.getProjection().toScreenLocation(marker.getPosition());
                 RelativeLayout rellay = (RelativeLayout) findViewById(R.id.rellay);
 
+                //*************************************
                 //find MarkerEntry which represents our marker:
                 for(i=0; i<markersOnMap.size(); i++){
                     thisMarker = markersOnMap.get(i);
@@ -200,6 +203,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                         servComm.updateMarkerVotes(finalThisMarker, "Increment votes");
                         markersOnMap.get(finalI).upvotes++;
                         voteMenu.dismiss();
+                        //myRecentMarkers.add(finalThisMarker);
                     }
                 });
                 voteDown.setDisplayIcon(R.drawable.votedown);
@@ -218,12 +222,39 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                         else{
                             servComm.updateMarkerVotes(finalThisMarker, "Decrement votes");
                             markersOnMap.get(finalI).downvotes++;
+                            //myRecentMarkers.add(finalThisMarker);
                         }
                         voteMenu.dismiss();
                     }
                 });
                 voteMenu.setX(clickPos.x - screenSize.x / 2);
                 voteMenu.setY(clickPos.y - screenSize.y / 2);
+
+                //************************************
+                //check if the user put the button there and if he did, he should be able to remove it as well
+                RadialMenuItem deleteEntry = new RadialMenuItem("Delete","Delete");
+                deleteEntry.setDisplayIcon(R.drawable.x_red_delete);
+                for(i=0; i<myRecentMarkers.size(); i++) //if myRecentMarkers contains the clicked marker
+                    if(myRecentMarkers.get(i).latitude == thisMarker.latitude &&
+                       myRecentMarkers.get(i).longitude == thisMarker.longitude)
+                        break;
+                final int finalI2=i;
+                if(i<myRecentMarkers.size()) {
+                    voteMenu.addMenuEntry(deleteEntry);
+                    deleteEntry.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                        @Override
+                        public void execute() {
+                            myRecentMarkers.remove(finalI2);
+                            servComm.deleteMarker(finalThisMarker);
+                            markersOnMap.remove(finalI2);
+                            marker.setVisible(false);
+                            marker.remove();
+                            voteMenu.dismiss();
+                        }
+                    });
+                }
+                //=====================================
+
                 voteMenu.show(rellay);
                 return true; //return false for default behavior
             }

@@ -113,10 +113,13 @@ public class ServerCommunicator {
 
         protected void onPostExecute(String file_url) {
             for(int i=0; i<markers.size(); i++)
-                if((markers.get(i).latitude > NE.latitude && markers.get(i).latitude < SW.latitude) ||
-                   (markers.get(i).longitude > NE.longitude && markers.get(i).longitude < SW.longitude))
+                if(markers.get(i).latitude > NE.latitude || markers.get(i).latitude < SW.latitude ||
+                   markers.get(i).longitude > NE.longitude || markers.get(i).longitude < SW.longitude){
                     markers.remove(i);
+                    i--;
+                }
             caller.populateMapWithMarkers(markers); //callback function
+            markers.clear(); //once again just in case
         }
     }
 
