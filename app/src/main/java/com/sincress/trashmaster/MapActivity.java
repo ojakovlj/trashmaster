@@ -26,14 +26,14 @@ import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
 import java.util.ArrayList;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LatLng clickCoords;
     private Point clickPos, screenSize;
     private RadialMenuWidget typeSelectMenu, voteMenu;
     private ServerCommunicator servComm;
-    private ArrayList<MarkerEntry> markersOnMap, myRecentMarkers; //myrecentmarkers - for "undo" operations
+    private ArrayList<MarkerEntry> markersOnMap, myRecentMarkers, myVotedMarkers; //myrecentmarkers - for "undo" operations
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        markersOnMap =  new ArrayList<>();
+        markersOnMap = new ArrayList<>();
         myRecentMarkers = new ArrayList<>();
+        myVotedMarkers = new ArrayList<>();
 
         screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
@@ -56,13 +57,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     /**
      * This function receives the callback from the instance of our ServerCommunicator when the
      * function getMarkersForArea is called
-     * @param readFromDB
+     *
+     * @param readFromDB Received list of marker entries from database
      */
-    public final void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB){
+    public final void populateMapWithMarkers(ArrayList<MarkerEntry> readFromDB) {
         markersOnMap.clear();
         mMap.clear();
         markersOnMap.addAll(readFromDB);
-        for(int i=0; i<readFromDB.size(); i++) {
+        for (int i = 0; i < readFromDB.size(); i++) {
             Log.e("DB: ", "Got Marker: " + readFromDB.get(i).latitude + ", " + readFromDB.get(i).longitude);
             putMarkerOnMap(readFromDB.get(i));
         }
@@ -71,14 +73,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     /**
      * This method receives the callback from the AsyncTask AddMarker in the ServerCommunicator.
      * It simply displays a message describing the outcome of the add-to-database operation
-     * @param outcome
+     *
+     * @param outcome "Success" or "Failure"
      */
-    public void displayConfirmationMsg(final String outcome){
+    public void displayConfirmationMsg(final String outcome) {
         runOnUiThread(new Runnable() {
             public void run() {
-                if(outcome.equals("Success"))
+                if (outcome.equals("Success"))
                     Toast.makeText(MapActivity.this, "Marker successfully added to database!", Toast.LENGTH_SHORT).show();
-                if(outcome.equals("Failure"))
+                if (outcome.equals("Failure"))
                     Toast.makeText(MapActivity.this, "Error: unable to add marker to database!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -86,23 +89,30 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     /**
      * This method is used for putting markers on the map after they've been fetched from the database
-     * @param thisMarker
+     *
+     * @param thisMarker Marker to be added to map
      */
     private void putMarkerOnMap(MarkerEntry thisMarker) {
         Bitmap bmp;
 
-        switch(thisMarker.type){
-            case 0: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_yellow);
+        switch (thisMarker.type) {
+            case 0:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_yellow);
                 break;
-            case 1: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_blue);
+            case 1:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_blue);
                 break;
-            case 2: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_brown);
+            case 2:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_brown);
                 break;
-            case 3: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_grey);
+            case 3:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_grey);
                 break;
-            case 4: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_green);
+            case 4:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_green);
                 break;
-            default: bmp =  BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+            default:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
                 break;
         }
 
@@ -118,29 +128,36 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     /**
      * This method is invoked when a long press is detected on the map. It places a marker on the map and
      * sends its data to the database where it will be stored.
-     * @param id
+     *
+     * @param id menu item ID
      */
     private void addMarkerToMap(int id) {
         Bitmap bmp;
 
-        switch(id){
-            case 0: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_yellow);
+        switch (id) {
+            case 0:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_yellow);
                 break;
-            case 1: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_blue);
+            case 1:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_blue);
                 break;
-            case 2: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_brown);
+            case 2:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_brown);
                 break;
-            case 3: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_grey);
+            case 3:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_grey);
                 break;
-            case 4: bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_green);
+            case 4:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_green);
                 break;
-            default: bmp =  BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+            default:
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
                 break;
         }
 
         bmp = Bitmap.createScaledBitmap(bmp, 35, 35, false);
 
-        if(clickCoords != null)
+        if (clickCoords != null)
             mMap.addMarker(new MarkerOptions()
                     .position(clickCoords)
                     .title("Recycle Bin!"))
@@ -181,29 +198,37 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                 //*************************************
                 //find MarkerEntry which represents our marker:
-                for(i=0; i<markersOnMap.size(); i++){
+                for (i = 0; i < markersOnMap.size(); i++) {
                     thisMarker = markersOnMap.get(i);
-                    if(thisMarker.latitude == marker.getPosition().latitude &&
-                       thisMarker.longitude == marker.getPosition().longitude)
+                    if (thisMarker.latitude == marker.getPosition().latitude &&
+                            thisMarker.longitude == marker.getPosition().longitude)
                         break;
                 }
-                //prepare the votemenu for displaying number of upvotes/downvotes
+                //nuisance
+                final MarkerEntry foundMarker = thisMarker;
+                final int posInMarkersList = i;
 
-                RadialMenuItem voteUp = new RadialMenuItem("True","Good: "+thisMarker.upvotes);
-                RadialMenuItem voteDown = new RadialMenuItem("False","Bad: "+thisMarker.downvotes);
+                //prepare the votemenu for displaying number of upvotes/downvotes, if not previously voted
+                for (i = 0; i < myVotedMarkers.size(); i++) //if myRecentMarkers contains the clicked marker
+                    if (myVotedMarkers.get(i).latitude == thisMarker.latitude &&
+                            myVotedMarkers.get(i).longitude == thisMarker.longitude)
+                        break;
+                if (i < myVotedMarkers.size())  //if thisMarker is not found in myVotedMarkers, show vote menu
+                    return true; //you cant vote and you sure cant delete it
+                //**************************************
+
+                RadialMenuItem voteUp = new RadialMenuItem("True", "Good: " + thisMarker.upvotes);
+                RadialMenuItem voteDown = new RadialMenuItem("False", "Bad: " + thisMarker.downvotes);
                 initVoteMenu();
                 voteUp.setDisplayIcon(R.drawable.voteup);
                 voteMenu.addMenuEntry(voteUp);
-                //nuisance
-                final MarkerEntry finalThisMarker = thisMarker;
-                final int finalI = i;
                 voteUp.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                     @Override
                     public void execute() {
-                        servComm.updateMarkerVotes(finalThisMarker, "Increment votes");
-                        markersOnMap.get(finalI).upvotes++;
+                        servComm.updateMarkerVotes(foundMarker, "Increment votes");
+                        markersOnMap.get(posInMarkersList).upvotes++;
                         voteMenu.dismiss();
-                        //myRecentMarkers.add(finalThisMarker);
+                        myVotedMarkers.add(foundMarker);
                     }
                 });
                 voteDown.setDisplayIcon(R.drawable.votedown);
@@ -213,40 +238,40 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     @Override
                     public void execute() {
 
-                        if(finalThisMarker.downvotes > 2) { //delete it
-                            servComm.deleteMarker(finalThisMarker);
-                            markersOnMap.remove(finalI);
+                        if (foundMarker.downvotes > 2) { //delete it
+                            servComm.deleteMarker(foundMarker);
+                            markersOnMap.remove(posInMarkersList);
                             marker.setVisible(false);
                             marker.remove();
-                        }
-                        else{
-                            servComm.updateMarkerVotes(finalThisMarker, "Decrement votes");
-                            markersOnMap.get(finalI).downvotes++;
-                            //myRecentMarkers.add(finalThisMarker);
+                        } else {
+                            servComm.updateMarkerVotes(foundMarker, "Decrement votes");
+                            markersOnMap.get(posInMarkersList).downvotes++;
+                            myVotedMarkers.add(foundMarker);
                         }
                         voteMenu.dismiss();
                     }
                 });
+
                 voteMenu.setX(clickPos.x - screenSize.x / 2);
                 voteMenu.setY(clickPos.y - screenSize.y / 2);
 
                 //************************************
                 //check if the user put the button there and if he did, he should be able to remove it as well
-                RadialMenuItem deleteEntry = new RadialMenuItem("Delete","Delete");
+                RadialMenuItem deleteEntry = new RadialMenuItem("Delete", "Delete");
                 deleteEntry.setDisplayIcon(R.drawable.x_red_delete);
-                for(i=0; i<myRecentMarkers.size(); i++) //if myRecentMarkers contains the clicked marker
-                    if(myRecentMarkers.get(i).latitude == thisMarker.latitude &&
-                       myRecentMarkers.get(i).longitude == thisMarker.longitude)
+                for (i = 0; i < myRecentMarkers.size(); i++) //if myRecentMarkers contains the clicked marker
+                    if (myRecentMarkers.get(i).latitude == thisMarker.latitude &&
+                            myRecentMarkers.get(i).longitude == thisMarker.longitude)
                         break;
-                final int finalI2=i;
-                if(i<myRecentMarkers.size()) {
+                final int finalI2 = i;
+                if (i < myRecentMarkers.size()) {
                     voteMenu.addMenuEntry(deleteEntry);
                     deleteEntry.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                         @Override
                         public void execute() {
                             myRecentMarkers.remove(finalI2);
-                            servComm.deleteMarker(finalThisMarker);
-                            markersOnMap.remove(finalI2);
+                            servComm.deleteMarker(foundMarker);
+                            markersOnMap.remove(posInMarkersList);
                             marker.setVisible(false);
                             marker.remove();
                             voteMenu.dismiss();
@@ -293,12 +318,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         voteMenu.setTextColor(Color.BLACK, 255);
     }
 
-    private void initPieMenu(){
-        RadialMenuItem itemPlastic = new RadialMenuItem("0","Plastic");
-        RadialMenuItem itemPaper = new RadialMenuItem("1","Paper");
-        RadialMenuItem itemBio = new RadialMenuItem("2","Bio");
-        RadialMenuItem itemGlass = new RadialMenuItem("3","Glass");
-        RadialMenuItem itemMetal = new RadialMenuItem("4","Metal");
+    private void initPieMenu() {
+        RadialMenuItem itemPlastic = new RadialMenuItem("0", "Plastic");
+        RadialMenuItem itemPaper = new RadialMenuItem("1", "Paper");
+        RadialMenuItem itemBio = new RadialMenuItem("2", "Bio");
+        RadialMenuItem itemGlass = new RadialMenuItem("3", "Glass");
+        RadialMenuItem itemMetal = new RadialMenuItem("4", "Metal");
 
         typeSelectMenu = new RadialMenuWidget(MapActivity.this);
         typeSelectMenu.setOutlineColor(Color.BLACK, 225);

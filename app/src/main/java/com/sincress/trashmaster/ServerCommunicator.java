@@ -1,8 +1,6 @@
 package com.sincress.trashmaster;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,9 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -101,9 +98,8 @@ public class ServerCommunicator {
                         markers.add(currentMarker);
                         // Storing each json item in variable
                     }
-                } else {
-                    // no Markers found
                 }
+                    //ELSE no Markers found
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -127,7 +123,7 @@ public class ServerCommunicator {
      * This method adds a marker to the database. The marker must be described by a MarkerEntry
      * class and all its fields must be filled. The callback will default to the
      * displayConfirmationMsg(String outcome) where outcome is "Success" or "Failure"
-     * @param markerToAdd
+     * @param markerToAdd Marker to be added
      */
     public void addMarkerToDB(MarkerEntry markerToAdd) {
         new AddMarker(markerToAdd).execute(); //add marker to the database
@@ -195,7 +191,7 @@ public class ServerCommunicator {
 
         protected String doInBackground(String... args) {
             // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("downvotes", String.valueOf(markerToUpdt.downvotes)));
             params.add(new BasicNameValuePair("longitude", String.valueOf(markerToUpdt.longitude)));
             params.add(new BasicNameValuePair("latitude", String.valueOf(markerToUpdt.latitude)));
@@ -242,8 +238,13 @@ public class ServerCommunicator {
         protected String doInBackground(String... args) {
             // Building Parameters, we pass only lat and lng because they're the primary key
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("longitude", String.valueOf(markerToDel.longitude)));
-            params.add(new BasicNameValuePair("latitude", String.valueOf(markerToDel.latitude)));
+            DecimalFormat df = new DecimalFormat("#.00000");
+            Double coord = markerToDel.longitude;
+            coord = Double.parseDouble(df.format(coord));
+            params.add(new BasicNameValuePair("longitude", String.valueOf(coord)));
+            coord = markerToDel.latitude;
+            coord = Double.parseDouble(df.format(coord));
+            params.add(new BasicNameValuePair("latitude", String.valueOf(coord)));
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_delete_marker, "POST", params);
             markers.remove(markerToDel);
