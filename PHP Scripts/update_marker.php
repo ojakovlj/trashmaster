@@ -34,14 +34,14 @@ if (isset($_POST['type']) && isset($_POST['upvotes']) && isset($_POST['downvotes
     if ($result) {
         // successfully inserted into database
         $response["success"] = 1;
-        $response["message"] = "Marker successfully updated.";
+        $response["message"] = "Operation UPDATE MARKER: success";
 
         // echoing JSON response
         echo json_encode($response);
     } else {
         // failed to insert row
         $response["success"] = 0;
-        $response["message"] = "Cr*p, it didn't work. Again.";
+        $response["message"] = "Operation UPDATE MARKER: failure (SQL update failed)";
 
         // echoing JSON response
         echo json_encode($response);

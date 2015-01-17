@@ -26,14 +26,14 @@ if (isset($_POST['longitude']) && isset($_POST['latitude'])) {
     if ($result) {
         // successfully inserted into database
         $response["success"] = 1;
-        $response["message"] = "Deletion successful.";
+        $response["message"] = "Operation DELETE MARKER: success.";
 
         // echoing JSON response
         echo json_encode($response);
     } else {
-        // failed to insert row
+        // failed to delete
         $response["success"] = 0;
-        $response["message"] = "Deleting failed.";
+        $response["message"] = "Operation DELETE MARKER: failure.";
 
         // echoing JSON response
         echo json_encode($response);

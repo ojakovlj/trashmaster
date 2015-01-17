@@ -42,7 +42,7 @@ if (mysql_num_rows($result) > 0) {
 } else {
     // no products found
     $response["success"] = 0;
-    $response["message"] = "No markers found";
+    $response["message"] = "Operation GET MARKERS: No markers found";
 
     // echo no users JSON
     echo json_encode($response);
