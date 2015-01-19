@@ -78,5 +78,19 @@
 
         </LinearLayout>
 
-
+    <Button
+        android:background="@drawable/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch_record_activity"
+        android:id="@+id/launch_record"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>
