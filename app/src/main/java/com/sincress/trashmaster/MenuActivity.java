@@ -7,7 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.util.Random;
 
 public class MenuActivity extends ActionBarActivity {
 
@@ -31,6 +37,34 @@ public class MenuActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+        // neka random zanimljivost
+        try {
+            InputStream is = getResources().getAssets().open("info.txt");
+            TextView tx = (TextView) findViewById(R.id.zanimljivosti);
+            BufferedReader rS = new BufferedReader(new InputStreamReader(is));
+            String lin;
+            int cnt=0;
+            while ((lin = rS.readLine())!=null)
+            {
+                cnt+=1;
+            }
+            is.close();
+            rS.close();
+
+            InputStream is2 = getResources().getAssets().open("info.txt");
+            BufferedReader rS2 = new BufferedReader(new InputStreamReader(is2));
+            Random r = new Random();
+            int i = r.nextInt(cnt);
+            int a=0;
+            for (a=0;a<i;a++)
+            {
+                lin = rS2.readLine();
+            }
+            tx.setText(lin);
+            is2.close();
+            rS2.close();
+        }catch (Exception e) {}
     }
 
 
