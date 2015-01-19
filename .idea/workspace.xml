@@ -15,8 +15,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="779ead9f-2d53-43b7-a938-63d1e7faeb03" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_menu.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MOVED" beforePath="D:\Projekti\AndroidStudioProjects\trashmaster\Trashmaster.iml" afterPath="$PROJECT_DIR$/trashmaster.iml" />
     </list>
@@ -1417,7 +1415,11 @@
       <created>1421704964106</created>
       <updated>1421704964106</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Dodane zanimljivosti i buttoni popravljeni.">
+      <created>1421706007515</created>
+      <updated>1421706007515</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
