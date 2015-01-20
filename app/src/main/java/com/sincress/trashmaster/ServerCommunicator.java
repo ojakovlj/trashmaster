@@ -28,10 +28,10 @@ import java.util.List;
 public class ServerCommunicator {
 
     private JSONParser jParser = new JSONParser();
-    private static String url_get_markers = "http://10.0.2.2/Trashmaster/get_markers.php"; //TODO
-    private static String url_add_marker = "http://10.0.2.2/Trashmaster/add_marker.php";
-    private static String url_update_marker = "http://10.0.2.2/Trashmaster/update_marker.php";
-    private static String url_delete_marker = "http://10.0.2.2/Trashmaster/delete_marker.php";
+    private static String url_get_markers = "http://trashmaster.zz.vc/get_markers.php"; //TODO
+    private static String url_add_marker = "http://trashmaster.zz.vc/add_marker.php";
+    private static String url_update_marker = "http://trashmaster.zz.vc/update_marker.php";
+    private static String url_delete_marker = "http://trashmaster.zz.vc/delete_marker.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_TYPE = "type";
     private static final String TAG_LATITUDE = "latitude";
