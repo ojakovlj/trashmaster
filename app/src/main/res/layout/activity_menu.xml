@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:text="@string/launch_overview_activity"
         android:id="@+id/launch_overview"
-        android:layout_below="@+id/launch_map"
         android:textColor="#ffffff"
         android:textSize="30dp"
         android:textStyle="bold"
@@ -57,10 +56,9 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
-        <EditText
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/zanimljivosti"
             android:layout_centerVertical="true"
@@ -68,12 +66,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
+            android:textColor="#000000"
             android:layout_gravity="center"
-            android:autoText="false"
-            android:enabled="true"
-            android:password="false"
-            android:text="Zanimljivosti o recikliranju"
-            android:textIsSelectable="true"
+            android:text="@string/info_placeholder"
             android:textSize="20dp" />
 
         </LinearLayout>
