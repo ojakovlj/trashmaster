@@ -170,6 +170,11 @@ public class ServerCommunicator {
         }
     }
 
+    /**
+     * updateMarkerVotes is used for calling the appropriate AsyncTask based on the arguments
+     * @param markerToUpdt MarkerEntry object for the database
+     * @param operation MarkerEntry object for the database
+     */
     public void updateMarkerVotes(MarkerEntry markerToUpdt, String operation){
         if(operation.equals("Increment votes"))
             new UpdateMarker(markerToUpdt, "increment").execute();
@@ -178,7 +183,7 @@ public class ServerCommunicator {
     }
 
     private class UpdateMarker extends AsyncTask<String, String, String> {
-        /**
+        /*
          * adding a marker to DB on given url
          */
         private MarkerEntry markerToUpdt;

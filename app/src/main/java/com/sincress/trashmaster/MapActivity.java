@@ -307,6 +307,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         });
     }
 
+    /**
+     * This method initialises the radial menu for upvoting or downvoting individual markers, called by a tap on the marker.
+     */
     private void initVoteMenu() {
         voteMenu = new RadialMenuWidget(this);
         voteMenu.setOutlineColor(Color.BLACK, 225);
@@ -318,12 +321,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         voteMenu.setTextColor(Color.BLACK, 255);
     }
 
+    /**
+     * This method initialises the radial menu for adding markers, called by a long hold on the map.
+     */
     private void initPieMenu() {
         RadialMenuItem itemPlastic = new RadialMenuItem("0", "Plastic");
         RadialMenuItem itemPaper = new RadialMenuItem("1", "Paper");
         RadialMenuItem itemBio = new RadialMenuItem("2", "Bio");
-        RadialMenuItem itemGlass = new RadialMenuItem("3", "Glass");
-        RadialMenuItem itemMetal = new RadialMenuItem("4", "Metal");
+        RadialMenuItem itemGlass = new RadialMenuItem("3", "Metal");
+        RadialMenuItem itemMetal = new RadialMenuItem("4", "Glass");
 
         typeSelectMenu = new RadialMenuWidget(MapActivity.this);
         typeSelectMenu.setOutlineColor(Color.BLACK, 225);
