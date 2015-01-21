@@ -18,8 +18,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="779ead9f-2d53-43b7-a938-63d1e7faeb03" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sincress/trashmaster/ServerCommunicator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MOVED" beforePath="D:\Projekti\AndroidStudioProjects\trashmaster\Trashmaster.iml" afterPath="$PROJECT_DIR$/trashmaster.iml" />
     </list>
@@ -1659,7 +1657,11 @@
       <created>1421879172629</created>
       <updated>1421879172629</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Izgleda da ovaj kod nešto ne valja. A samo dodao kometare -.-">
+      <created>1421880069903</created>
+      <updated>1421880069903</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1748,7 +1750,8 @@
     <MESSAGE value="Server prebacen na remote hosting, nije vise na localhostu." />
     <MESSAGE value="Dodani JavaDoc, popravljen redosljed markera" />
     <MESSAGE value="Dodani JavaDoc, mlo organiziran kod" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dodani JavaDoc, mlo organiziran kod" />
+    <MESSAGE value="Izgleda da ovaj kod nešto ne valja. A samo dodao kometare -.-" />
+    <option name="LAST_COMMIT_MESSAGE" value="Izgleda da ovaj kod nešto ne valja. A samo dodao kometare -.-" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
