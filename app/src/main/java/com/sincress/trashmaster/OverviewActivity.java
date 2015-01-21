@@ -1,5 +1,6 @@
 package com.sincress.trashmaster;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -60,10 +62,29 @@ public class OverviewActivity extends ActionBarActivity {
             {
                 lin = rS2.readLine();
             }
-            tx.setText(lin);
+            tx.setText("\nDid you know?\n - "+lin);
             is2.close();
             rS2.close();
         }catch (Exception e) {}
+
+        //show records and stats
+        TextView rc = (TextView) findViewById(R.id.record);
+        TextView strc = (TextView) findViewById(R.id.infoRC);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("trashmaster", 0);
+
+        Map<String,?> allRec = pref.getAll();
+
+        float count=0;
+        String zapis="";
+        for (String k : allRec.keySet()){
+            float i = pref.getLong(k,0);
+            count += i;
+            zapis += k.toUpperCase() + " waste = " + (float) (i/1000.0) + " kg\n";
+        }
+
+        rc.setText(zapis);
+        strc.setText("\nYou disposed " + (float) (count/1000.0) + " kg of waste!");
 
         // Ensure that all tab content childs are not visible at startup.
         for (int i = 0; i < tabContent.getChildCount(); i++) {

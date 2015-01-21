@@ -1,13 +1,26 @@
 package com.sincress.trashmaster;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.TextView;
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.io.BufferedReader;
@@ -16,6 +29,8 @@ import java.io.LineNumberReader;
 import java.util.Random;
 
 public class MenuActivity extends ActionBarActivity {
+
+    private String waste="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +80,165 @@ public class MenuActivity extends ActionBarActivity {
             is2.close();
             rS2.close();
         }catch (Exception e) {}
+
+
+        // zabilješke bacanaj otpada
+
+        final RadialMenuWidget recMenu;
+        final RadialMenuWidget massMenu;
+
+        recMenu = new RadialMenuWidget(this);
+        recMenu.setAnimationSpeed(1000);
+        recMenu.setSelectedColor(Color.rgb(10, 250, 15), 255);
+        RadialMenuItem bioItem = new RadialMenuItem("bio","Biowaste");
+        recMenu.addMenuEntry(bioItem);
+        RadialMenuItem petItem = new RadialMenuItem("pet","Plastic");
+        recMenu.addMenuEntry(petItem);
+        RadialMenuItem glassItem = new RadialMenuItem("glass","Glass");
+        recMenu.addMenuEntry(glassItem);
+        RadialMenuItem metItem = new RadialMenuItem("met","Metal");
+        recMenu.addMenuEntry(metItem);
+        final RadialMenuItem paperItem = new RadialMenuItem("paper","Paper");
+        recMenu.addMenuEntry(paperItem);
+
+        massMenu = new RadialMenuWidget(this);
+        massMenu.setHeader("Mass",12);
+        massMenu.setAnimationSpeed(1000);
+        massMenu.setSelectedColor(Color.rgb(10, 250, 15), 255);
+        RadialMenuItem closeItem = new RadialMenuItem("close","close");
+        massMenu.setCenterCircle(closeItem);
+        RadialMenuItem g1Item = new RadialMenuItem("1","1g");
+        massMenu.addMenuEntry(g1Item);
+        RadialMenuItem g10Item = new RadialMenuItem("10","10g");
+        massMenu.addMenuEntry(g10Item);
+        RadialMenuItem g50Item = new RadialMenuItem("50","50g");
+        massMenu.addMenuEntry(g50Item);
+        RadialMenuItem g100Item = new RadialMenuItem("100","100g");
+        massMenu.addMenuEntry(g100Item);
+        RadialMenuItem g500Item = new RadialMenuItem("500","500g");
+        massMenu.addMenuEntry(g500Item);
+        RadialMenuItem g1000Item = new RadialMenuItem("1000","1000g");
+        massMenu.addMenuEntry(g1000Item);
+
+        Button recButton = (Button) findViewById(R.id.launch_record);
+
+        recButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                recMenu.show(v);
+            }
+        });
+
+
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("trashmaster", 0);
+        final SharedPreferences.Editor editor = pref.edit(); // used for save data
+
+        bioItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                waste="bio";
+                massMenu.show(findViewById(android.R.id.content));
+                //recMenu.dismiss();
+                recMenu.destroyDrawingCache();
+            }
+        });
+
+        petItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                waste = "pet";
+                massMenu.show(findViewById(android.R.id.content));
+                //recMenu.dismiss();
+            }
+        });
+
+        glassItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                waste = "glass";
+                massMenu.show(findViewById(android.R.id.content));
+                //recMenu.dismiss();
+            }
+        });
+
+        metItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                waste = "met";
+                massMenu.show(findViewById(android.R.id.content));
+                //recMenu.dismiss();
+            }
+        });
+
+        paperItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                waste = "paper";
+                massMenu.show(findViewById(android.R.id.content));
+                //recMenu.dismiss();
+            }
+        });
+
+        closeItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                massMenu.dismiss();
+            }
+        });
+
+        g1Item.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                editor.putLong(waste, pref.getLong(waste, 0) + 1);
+                editor.commit();
+                Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        g10Item.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                editor.putLong(waste,pref.getLong(waste,0)+10);
+                editor.commit();
+                Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        g50Item.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                editor.putLong(waste,pref.getLong(waste,0)+50);
+                editor.commit();
+                Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        g100Item.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                editor.putLong(waste,pref.getLong(waste,0)+100);
+                editor.commit();
+                Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        g500Item.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                editor.putLong(waste,pref.getLong(waste,0)+500);
+                editor.commit();
+                Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        g1000Item.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                editor.putLong(waste,pref.getLong(waste,0)+1000);
+                editor.commit();
+                Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
@@ -83,7 +257,38 @@ public class MenuActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.reset_record) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setTitle("Confirm");
+                builder.setMessage("Are you sure?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("trashmaster", 0);
+                        SharedPreferences.Editor editor = pref.edit(); // used for save data
+                        editor.clear();
+                        editor.commit();
+                        Toast.makeText(MenuActivity.this, "Reset!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
             return true;
         }
 

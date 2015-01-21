@@ -9,6 +9,7 @@
     <string name="launch_overview_activity">Overview</string>
     <string name="launch_record_activity">Record</string>
     <string name="info_placeholder">Placeholder for information</string>
+    <string name="reset_record">Reset record</string>
 
     <string-array name="type_choices">
         <item>NONE</item>
