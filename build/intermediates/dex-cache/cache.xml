@@ -2,53 +2,53 @@
 <items version="2" >
 
     <item
-        jar="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\classes-4657dfd795d9766c561e893f2498d7184e0a8734.jar" />
-    </item>
-    <item
-        jar="D:\Projekti\AndroidStudioProjects\trashmaster\app\libs\radial-menu-v4.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="5d8365e03c7b428815d3d8584332b1df298cbb9c">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\radial-menu-v4-b059ea057d891c7eccb0f0c64d29d2f7fba4a7df.jar" />
-    </item>
-    <item
-        jar="D:\programi\Android SDK\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jar="D:\Programs\Android SDK\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-dc93e127e7c912ba95082c787d6295a807097627.jar" />
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\support-annotations-21.0.3-7b05fcac6666b7ad130cf5f94c4b9f5eef790804.jar" />
     </item>
     <item
-        jar="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-71ad5c670d18af9896bfb800b54863b5dbbd4466.jar" />
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\classes-467c99a0e4d8aa009a653fd45961dc62abe82b9a.jar" />
     </item>
     <item
-        jar="D:\Projekti\AndroidStudioProjects\trashmaster\app\libs\assertj-core-1.6.1.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="5db13d0ae30dca5157f0dea60f78640cf039cafe">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\assertj-core-1.6.1-0e0253a6d2e47a0616dde1d3c6a1ae14d0415241.jar" />
-    </item>
-    <item
-        jar="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\classes-90dcf6d0413fba21bcf584cfe2f3037335d77770.jar" />
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\classes-a7fd892a1f78a985fa53071dd26ff8dec98538e5.jar" />
     </item>
     <item
-        jar="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\internal_impl-21.0.3-e926d03f33a39324a188a801279a10a378dc38d0.jar" />
+    </item>
+    <item
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\libs\assertj-core-1.6.1.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="5db13d0ae30dca5157f0dea60f78640cf039cafe">
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\assertj-core-1.6.1-bc6c866a3fac129f424b4df07c9d2ba880b2e919.jar" />
+    </item>
+    <item
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\libs\radial-menu-v4.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="5d8365e03c7b428815d3d8584332b1df298cbb9c">
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\radial-menu-v4-d7c7b85907107bf2e3a0242b98d26666d8ddfb8c.jar" />
+    </item>
+    <item
+        jar="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="D:\Projekti\AndroidStudioProjects\trashmaster\app\build\intermediates\pre-dexed\debug\classes-ee8038c55bb54bb7179aa34b2829fd4076ec4dd2.jar" />
+        <dex dex="D:\Programs\Android SDK\Projects\Trashmaster\app\build\intermediates\pre-dexed\release\classes-ac7eadd3067e9b5ef24cd6c4e3668d4ff307644d.jar" />
     </item>
 
 </items>
