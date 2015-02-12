@@ -1,29 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'trashmaster'
-            keyPassword 'pass'
-            storeFile file('D:/Projekti/AndroidStudioProjects/keys/keyTrashmaster.jks')
-            storePassword 'pass'
-        }
-    }
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion "21.1.1"
     defaultConfig {
         applicationId "com.sincress.trashmaster"
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
-        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -37,5 +27,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.squareup.assertj:assertj-android:1.0.0' //must be compile not AndroidTestCompile?
     compile 'com.google.android.gms:play-services:6.5.87'
 }

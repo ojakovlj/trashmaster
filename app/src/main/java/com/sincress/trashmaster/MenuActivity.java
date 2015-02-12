@@ -58,10 +58,35 @@ public class MenuActivity extends ActionBarActivity {
         });
 
         // neka random zanimljivost
-        DidYouKnowM();
+        try {
+            InputStream is = getResources().getAssets().open("info.txt");
+            TextView tx = (TextView) findViewById(R.id.zanimljivosti);
+            BufferedReader rS = new BufferedReader(new InputStreamReader(is));
+            String lin;
+            int cnt = 0;
+            while ((lin = rS.readLine()) != null) {
+                cnt += 1;
+            }
+            is.close();
+            rS.close();
+
+            InputStream is2 = getResources().getAssets().open("info.txt");
+            BufferedReader rS2 = new BufferedReader(new InputStreamReader(is2));
+            Random r = new Random();
+            int i = r.nextInt(cnt);
+            int a = 0;
+            for (a = 0; a < i; a++) {
+                lin = rS2.readLine();
+            }
+            tx.setText(lin);
+            is2.close();
+            rS2.close();
+        } catch (Exception e) {
+        }
 
 
-        //Waste Disposal Records BEGIN
+        // zabilješke bacanaj otpada
+
         final RadialMenuWidget recMenu;
         final RadialMenuWidget massMenu;
 
@@ -216,7 +241,6 @@ public class MenuActivity extends ActionBarActivity {
                 Toast.makeText(MenuActivity.this, "Saved", Toast.LENGTH_SHORT).show();
             }
         });
-        //Waste Disposal Records END
 
     }
 
@@ -272,37 +296,5 @@ public class MenuActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * This method reads random fun fact from local file and prints it on the main screen
-     *
-     */
-    private void DidYouKnowM(){
-        try {
-            InputStream is = getResources().getAssets().open("info.txt");
-            TextView tx = (TextView) findViewById(R.id.zanimljivosti);
-            BufferedReader rS = new BufferedReader(new InputStreamReader(is));
-            String lin;
-            int cnt = 0;
-            while ((lin = rS.readLine()) != null) {
-                cnt += 1;
-            }
-            is.close();
-            rS.close();
-
-            InputStream is2 = getResources().getAssets().open("info.txt");
-            BufferedReader rS2 = new BufferedReader(new InputStreamReader(is2));
-            Random r = new Random();
-            int i = r.nextInt(cnt);
-            int a = 0;
-            for (a = 0; a < i; a++) {
-                lin = rS2.readLine();
-            }
-            tx.setText(lin);
-            is2.close();
-            rS2.close();
-        } catch (Exception e) {
-        }
     }
 }

@@ -40,10 +40,51 @@ public class OverviewActivity extends ActionBarActivity {
         tabWidget.removeAllViews();
 
         // neka random zanimljivost
-        DidYouKnow();
+        try {
+            InputStream is = getResources().getAssets().open("info.txt");
+            TextView tx = (TextView) findViewById(R.id.infoOS);
+            BufferedReader rS = new BufferedReader(new InputStreamReader(is));
+            String lin;
+            int cnt=0;
+            while ((lin = rS.readLine())!=null)
+            {
+                cnt+=1;
+            }
+            is.close();
+            rS.close();
+
+            InputStream is2 = getResources().getAssets().open("info.txt");
+            BufferedReader rS2 = new BufferedReader(new InputStreamReader(is2));
+            Random r = new Random();
+            int i = r.nextInt(cnt);
+            int a=0;
+            for (a=0;a<i;a++)
+            {
+                lin = rS2.readLine();
+            }
+            tx.setText("\nDid you know?\n - "+lin);
+            is2.close();
+            rS2.close();
+        }catch (Exception e) {}
 
         //show records and stats
-        ShowStats();
+        TextView rc = (TextView) findViewById(R.id.record);
+        TextView strc = (TextView) findViewById(R.id.infoRC);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("trashmaster", 0);
+
+        Map<String,?> allRec = pref.getAll();
+
+        float count=0;
+        String zapis="";
+        for (String k : allRec.keySet()){
+            float i = pref.getLong(k,0);
+            count += i;
+            zapis += k.toUpperCase() + " waste = " + (float) (i/1000.0) + " kg\n";
+        }
+
+        rc.setText(zapis);
+        strc.setText("\nYou disposed " + (float) (count/1000.0) + " kg of waste!");
 
         // Ensure that all tab content childs are not visible at startup.
         for (int i = 0; i < tabContent.getChildCount(); i++) {
@@ -71,64 +112,6 @@ public class OverviewActivity extends ActionBarActivity {
             tabHost.addTab(tabSpec);
         }
 		tabHost.setCurrentTab(0);
-    }
-
-    /**
-     * This method reads random fun fact from local file and prints it on the screen
-     * on stats tab
-     */
-    private void DidYouKnow(){
-        try {
-            InputStream is = getResources().getAssets().open("info.txt");
-            TextView tx = (TextView) findViewById(R.id.infoOS);
-            BufferedReader rS = new BufferedReader(new InputStreamReader(is));
-            String lin;
-            int cnt=0;
-            while ((lin = rS.readLine())!=null)
-            {
-                cnt+=1;
-            }
-            is.close();
-            rS.close();
-
-            InputStream is2 = getResources().getAssets().open("info.txt");
-            BufferedReader rS2 = new BufferedReader(new InputStreamReader(is2));
-            Random r = new Random();
-            int i = r.nextInt(cnt);
-            int a=0;
-            for (a=0;a<i;a++)
-            {
-                lin = rS2.readLine();
-            }
-            tx.setText("\nDid you know?\n - "+lin);
-            is2.close();
-            rS2.close();
-        }catch (Exception e) {}
-    }
-
-    /**
-     * This method shows stats of waste disposal on client device.
-     * Dividing waste per group and showing mass of disposed waste for every group
-     * in records tab and sum of all groups in stats tab
-     */
-    private void ShowStats(){
-        TextView rc = (TextView) findViewById(R.id.record);
-        TextView strc = (TextView) findViewById(R.id.infoRC);
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("trashmaster", 0);
-
-        Map<String,?> allRec = pref.getAll();
-
-        float count=0;
-        String zapis="";
-        for (String k : allRec.keySet()){
-            float i = pref.getLong(k,0);
-            count += i;
-            zapis += k.toUpperCase() + " waste = " + (float) (i/1000.0) + " kg\n";
-        }
-
-        rc.setText(zapis);
-        strc.setText("\nYou disposed " + (float) (count/1000.0) + " kg of waste!");
     }
 
 }
