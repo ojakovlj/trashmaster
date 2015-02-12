@@ -50,8 +50,10 @@ public class ServerCommunicator {
 
     /**
      * This method will invoke an AsyncTask which will retrieve markers from the map and
-     * place them in an ArrayList<MarkerEntry>. The callback will default to the
-     * populateMapWithMarkers(ArrayList<MarkerEntry>) method.
+     * place them in an ArrayList. The callback will default to the
+     * populateMapWithMarkers(ArrayList MarkerEntry) method.
+     * @param UL upper left coordinates for bounding box form the map
+     * @param LR lower right coordinates for bounding box form the map
      */
     public void getMarkersForArea(LatLng UL, LatLng LR) {
         new LoadMarkers(UL, LR).execute(); //load markers from the database
