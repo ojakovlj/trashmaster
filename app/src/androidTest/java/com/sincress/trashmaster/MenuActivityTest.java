@@ -6,10 +6,11 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
 
 import static android.test.TouchUtils.clickView;
 import static android.test.ViewAsserts.assertGroupContains;
@@ -17,9 +18,13 @@ import static org.assertj.android.api.Assertions.assertThat;
 
 public class MenuActivityTest extends ActivityInstrumentationTestCase2<MenuActivity> {
 
-    public static final int ACTIVITY_TIMEOUT = 1000;
+    public static final int ACTIVITY_TIMEOUT = 4000;
 
     private MenuActivity activity;
+    private LinearLayout layoutRoot;
+    private RelativeLayout rellay;
+    private TextView informations;
+    private Button launchMapBtn, launchOVBtn, launchLogBtn;
 
     public MenuActivityTest() {
         super(MenuActivity.class);
@@ -30,94 +35,54 @@ public class MenuActivityTest extends ActivityInstrumentationTestCase2<MenuActiv
         super.setUp();
 
         activity = getActivity();
-
+        layoutRoot = (LinearLayout) activity.findViewById(R.id.linlay);
+        launchMapBtn = (Button) activity.findViewById(R.id.launch_map);
+        launchOVBtn = (Button) activity.findViewById(R.id.launch_overview);
+        launchLogBtn = (Button) activity.findViewById(R.id.launch_record);
+        rellay = (RelativeLayout) activity.findViewById(R.id.rellay);
+        informations = (TextView) activity.findViewById(R.id.zanimljivosti);
     }
 
-   /* @MediumTest
-    public void testTitle() {
-        assertThat(instruction).isVisible().hasText(R.string.mode_select);
+    @MediumTest
+    public void testInfoIsShown() {
+        assertThat(informations).isVisible().isNotNull();
     }
 
     @MediumTest
     public void testLayout() {
         assertThat(layoutRoot)
-                .hasChildCount(6)
+                .hasChildCount(3)
                 .isVertical()
                 .isVisible();
-        assertGroupContains(layoutRoot, operSelect);
-        assertGroupContains(layoutRoot, instruction);
-        assertGroupContains(layoutRoot, sublay1);
-        assertGroupContains(layoutRoot, sublay2);
+        assertGroupContains(layoutRoot, rellay);
+        assertGroupContains(layoutRoot, informations);
+        assertGroupContains(layoutRoot, launchLogBtn);
     }
 
     @MediumTest
-    public void testSelectionSpinnerIsShown() {
-        assertThat(operSelect).isShown();
+    public void testRadialMenuWorks() { testRadialMenu(); }
+
+    @MediumTest
+    public void testLaunchOverviewActivity() {
+        testLaunchActivity(launchOVBtn, OverviewActivity.class);
     }
 
     @MediumTest
-    public void testInstructionIsShown() {
-        assertThat(instruction).isShown();
+    public void testLaunchMapActivity() {
+        testLaunchActivity(launchMapBtn, MapActivity.class);
     }
 
-    @MediumTest
-    public void testDoesTakeIntegers() { testInputIsOk(field1, "3"); }
-
-    @MediumTest
-    public void testDoesTakeNegativeIntegers() { testInputIsOk(field2, "7"); }
-
-    @MediumTest
-    public void testDoesTakeFloats() { testInputIsOk(field3, "8.5"); }
-
-    @MediumTest
-    public void testDoesTakeNegativeFloats() { testInputIsOk(field4, "2.3"); }
-
-    @MediumTest
-    public void testSpinnerWorks() { testSpinner(operSelect, 1); }
-
-
-    @MediumTest
-    public void testLaunchResultActivity() {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                field1.setText("2");
-                field2.setText("2");
-                field3.setText("2");
-                field4.setText("2");
-            }
-        });
-        testLaunchActivity(calculate, MenuActivity.class);
-    }*/
-
-    private void testSpinner(final Spinner spinner1, final int i) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                spinner1.requestFocus();
-                spinner1.setSelection(i);
-            }
-        });
+    private void testRadialMenu() {
+        clickView(this, launchLogBtn);
+        try {
+            Thread.sleep(2000); //wait for the radial menu to appear
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //for some reason this just doesn't work :/
+        RadialMenuWidget menu = (RadialMenuWidget) activity.findViewById(R.id.radialLogMenu);
+        assertThat(menu).isVisible();
     }
-
-    private void input(final View view, final String text) {
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                view.requestFocus();
-            }
-        });
-
-        getInstrumentation().waitForIdleSync();
-        getInstrumentation().sendStringSync(text);
-        getInstrumentation().waitForIdleSync();
-    }
-
-    private void testInputIsOk(EditText view, String input) {
-        input(view, input);
-        assertThat(view).hasError(null);
-    }
-
 
     private void testLaunchActivity(final View button, Class<? extends Activity> activityClass) {
         final Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(activityClass.getName(), null, false);

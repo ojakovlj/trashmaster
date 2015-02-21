@@ -82,6 +82,7 @@ public class MenuActivity extends ActionBarActivity {
             is2.close();
             rS2.close();
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -93,6 +94,7 @@ public class MenuActivity extends ActionBarActivity {
         recMenu = new RadialMenuWidget(this);
         recMenu.setAnimationSpeed(1000);
         recMenu.setSelectedColor(Color.rgb(10, 250, 15), 255);
+        recMenu.setId(R.id.radialLogMenu); //we set an ID which will be used in the MenuActivityTest
         RadialMenuItem bioItem = new RadialMenuItem("bio", "Biowaste");
         recMenu.addMenuEntry(bioItem);
         RadialMenuItem petItem = new RadialMenuItem("pet", "Plastic");
@@ -140,7 +142,7 @@ public class MenuActivity extends ActionBarActivity {
             public void execute() {
                 waste = "bio";
                 massMenu.show(findViewById(android.R.id.content));
-                //recMenu.dismiss();
+                recMenu.dismiss();
                 recMenu.destroyDrawingCache();
             }
         });
@@ -150,7 +152,7 @@ public class MenuActivity extends ActionBarActivity {
             public void execute() {
                 waste = "pet";
                 massMenu.show(findViewById(android.R.id.content));
-                //recMenu.dismiss();
+                recMenu.dismiss();
             }
         });
 
@@ -159,7 +161,7 @@ public class MenuActivity extends ActionBarActivity {
             public void execute() {
                 waste = "glass";
                 massMenu.show(findViewById(android.R.id.content));
-                //recMenu.dismiss();
+                recMenu.dismiss();
             }
         });
 
@@ -168,7 +170,7 @@ public class MenuActivity extends ActionBarActivity {
             public void execute() {
                 waste = "met";
                 massMenu.show(findViewById(android.R.id.content));
-                //recMenu.dismiss();
+                recMenu.dismiss();
             }
         });
 
@@ -177,7 +179,7 @@ public class MenuActivity extends ActionBarActivity {
             public void execute() {
                 waste = "paper";
                 massMenu.show(findViewById(android.R.id.content));
-                //recMenu.dismiss();
+                recMenu.dismiss();
             }
         });
 
