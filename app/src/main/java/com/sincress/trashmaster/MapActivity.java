@@ -4,12 +4,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -65,7 +70,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.clear();
         markersOnMap.addAll(readFromDB);
         for (int i = 0; i < readFromDB.size(); i++) {
-            Log.e("DB: ", "Got Marker: " + readFromDB.get(i).latitude + ", " + readFromDB.get(i).longitude);
+            Log.i("DB: ", "Got Marker: " + readFromDB.get(i).latitude + ", " + readFromDB.get(i).longitude);
             putMarkerOnMap(readFromDB.get(i));
         }
     }
@@ -184,9 +189,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         UiSettings uiSettings = mMap.getUiSettings();
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMyLocationEnabled(true);
         uiSettings.setAllGesturesEnabled(true);
-        uiSettings.setCompassEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
+
         //set the onclicklistener for markers - show vote menu
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -305,6 +312,32 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 servComm.getMarkersForArea(upperRight, lowerLeft);
             }
         });
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener()
+        {
+            @Override
+            public boolean onMyLocationButtonClick()
+            {
+                // Getting LocationManager object from System Service LOCATION_SERVICE
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                // Creating a criteria object to retrieve provider
+                Criteria criteria = new Criteria();
+                criteria.setHorizontalAccuracy(Criteria.ACCURACY_COARSE);
+                criteria.setVerticalAccuracy(Criteria.ACCURACY_COARSE);
+                // Getting the name of the best provider
+                String provider = locationManager.getBestProvider(criteria, true);
+                // Getting Current Location
+                Location location = locationManager.getLastKnownLocation(provider);
+                if(location != null) {
+                    LatLng ll = new LatLng(location.getLatitude(), location.getLatitude());
+                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 20);
+                    mMap.animateCamera(update);
+                }
+                else
+                    Toast.makeText(MapActivity.this, "Current location unavailable",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     /**
@@ -377,4 +410,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
         });
     }
+
 }
